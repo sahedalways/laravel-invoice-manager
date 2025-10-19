@@ -18,10 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'f_name',
+        'l_name',
+        'phone_no',
         'email',
         'password',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,5 +47,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Full Name Accessor
+    public function getFullNameAttribute()
+    {
+        return $this->f_name . ' ' . $this->l_name;
     }
 }
