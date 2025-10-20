@@ -144,6 +144,8 @@ class Products extends BaseComponent
         $this->resetLoaded();
     }
 
+
+
     // Load more function
     public function loadMore()
     {
@@ -151,8 +153,10 @@ class Products extends BaseComponent
 
         $query = Product::query();
         if ($this->search && $this->search != '') {
-            $query->where('name', 'like', '%' . $this->search . '%');
-            $query->where('sku', 'like', '%' . $this->search . '%');
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('sku', 'like', '%' . $this->search . '%');
+            });
         }
 
         if ($this->lastId) {
