@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Admin\Components;
 
 use Livewire\Component;
 
@@ -12,6 +12,6 @@ class ImageModal extends Component
 
     public function render()
     {
-        return view('livewire.components.image-modal');
+        return view('livewire.admin.components.image-modal');
     }
 }

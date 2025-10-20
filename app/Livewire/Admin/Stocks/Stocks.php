@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Stocks;
+namespace App\Livewire\Admin\Stocks;
 
-use App\Livewire\Components\BaseComponent;
+use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Product;
 use App\Services\StockManage\StockService;
 
@@ -36,7 +36,7 @@ class Stocks extends BaseComponent
 
     public function render()
     {
-        return view('livewire.stocks.stocks', [
+        return view('livewire.admin.stocks.stocks', [
             'infos' => $this->loaded
         ]);
     }

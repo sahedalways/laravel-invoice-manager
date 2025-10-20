@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Products;
+namespace App\Livewire\Admin\Products;
 
-use App\Livewire\Components\BaseComponent;
+use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Product;
 use App\Services\ProductManage\ProductManageService;
 use Illuminate\Validation\Rule;
@@ -56,7 +56,7 @@ class Products extends BaseComponent
 
     public function render()
     {
-        return view('livewire.products.products', [
+        return view('livewire.admin.products.products', [
             'infos' => $this->loaded
         ]);
     }

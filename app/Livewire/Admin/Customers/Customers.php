@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Customers;
+namespace App\Livewire\Admin\Customers;
 
-use App\Livewire\Components\BaseComponent;
+use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Customer;
 use App\Services\UserService;
 use Illuminate\Validation\Rule;
@@ -48,7 +48,7 @@ class Customers extends BaseComponent
 
     public function render()
     {
-        return view('livewire.customers.customers', [
+        return view('livewire.admin.customers.customers', [
             'infos' => $this->loaded
         ]);
     }

@@ -26,9 +26,9 @@
 
 <body class="g-sidenav-show">
     <div class="min-height-300 bg-primary position-absolute w-100"></div>
-    @livewire('components.side-bar')
+    @livewire('admin.components.side-bar')
     <main class="main-content position-relative border-radius-lg ">
-        @livewire('components.header')
+        @livewire('admin.components.header')
 
         <div class="container-fluid py-2">
             {{ $slot }}
@@ -36,7 +36,7 @@
     </main>
 
 
-    <livewire:components.image-modal />
+    <livewire:admin.components.image-modal />
 
 
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>

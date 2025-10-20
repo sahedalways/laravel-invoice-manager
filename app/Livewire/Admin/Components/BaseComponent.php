@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Livewire\Admin\Components;
 
 use Livewire\Component;
 use App\Traits\ToastTrait;

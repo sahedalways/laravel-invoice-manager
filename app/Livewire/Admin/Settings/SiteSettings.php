@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace App\Livewire\Admin\Settings;
 
-use App\Livewire\Components\BaseComponent;
+use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\SiteSetting;
 use App\Services\SettingService;
 use Livewire\WithFileUploads;
@@ -21,7 +21,7 @@ class SiteSettings extends BaseComponent
     /* render the page */
     public function render()
     {
-        return view('livewire.settings.site-settings');
+        return view('livewire.admin.settings.site-settings');
     }
 
     protected $rules = [

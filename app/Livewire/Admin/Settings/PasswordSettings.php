@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace App\Livewire\Admin\Settings;
 
-use App\Livewire\Components\BaseComponent;
+use App\Livewire\Admin\Components\BaseComponent;
 use App\Services\UserService;
 
 
@@ -39,6 +39,6 @@ class PasswordSettings extends BaseComponent
 
     public function render()
     {
-        return view('livewire.settings.password-settings');
+        return view('livewire.admin.settings.password-settings');
     }
 }

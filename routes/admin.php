@@ -1,13 +1,14 @@
 <?php
 
-use App\Livewire\Customers\Customers;
-use App\Livewire\Dashboard;
-use App\Livewire\Invoices\Invoices;
-use App\Livewire\Products\Products;
-use App\Livewire\Reports\Reports;
-use App\Livewire\Settings\PasswordSettings;
-use App\Livewire\Settings\SiteSettings;
-use App\Livewire\Stocks\Stocks;
+use App\Livewire\Admin\Pos\Pos;
+use App\Livewire\Admin\Customers\Customers;
+use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Invoices\Invoices;
+use App\Livewire\Admin\Products\Products;
+use App\Livewire\Admin\Reports\Reports;
+use App\Livewire\Admin\Settings\PasswordSettings;
+use App\Livewire\Admin\Settings\SiteSettings;
+use App\Livewire\Admin\Stocks\Stocks;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
   /* Admin Dashboard */
   Route::get('dashboard', Dashboard::class)->name('dashboard');
+
+  // pos
+  Route::get('/pos', Pos::class)->name('pos.index');
 
 
   // Products
@@ -26,6 +30,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
 
   // Customers
   Route::get('/customers', Customers::class)->name('customers.index');
+
 
   // Invoices
   Route::get('/invoices', Invoices::class)->name('invoices.index');

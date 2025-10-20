@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Auth;
 
-use App\Livewire\Components\BaseComponent;
+use App\Livewire\Admin\Components\BaseComponent;
 use App\Repositories\AuthRepository;
 
 
