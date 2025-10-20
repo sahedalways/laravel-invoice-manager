@@ -62,9 +62,11 @@
                                                     <button
                                                         wire:click="adjustStock({{ $product->id }}, 1, 'out', 'Manual Adjustment')"
                                                         class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center"
-                                                        title="Reduce Stock">
+                                                        title="Reduce Stock"
+                                                        @if ($product->stock_quantity <= 0) disabled @endif>
                                                         <i class="fas fa-minus"></i>
                                                     </button>
+
 
                                                     <!-- View stock history -->
                                                     <button wire:click="openStockModal({{ $product->id }})"
