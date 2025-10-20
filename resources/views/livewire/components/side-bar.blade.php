@@ -28,6 +28,69 @@
 
 
 
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/products*') ? 'active' : '' }}"
+                        href="{{ route('admin.products.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                            <i class="ni ni-bag-17 text-success text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1"> Manage Products</span>
+                    </a>
+                </li>
+
+
+
+
+                <!-- Stock -->
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/stocks*') ? 'active' : '' }}"
+                        href="{{ route('admin.stocks.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                            <i class="ni ni-archive-2 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1"> Manage Stock</span>
+                    </a>
+                </li>
+
+                <!-- Customers -->
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/customers*') ? 'active' : '' }}"
+                        href="{{ route('admin.customers.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                            <i class="ni ni-circle-08 text-info text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1"> Manage Customers</span>
+                    </a>
+                </li>
+
+                <!-- Invoices -->
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/invoices*') ? 'active' : '' }}"
+                        href="{{ route('admin.invoices.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                            <i class="ni ni-credit-card text-danger text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1"> Invoices</span>
+                    </a>
+                </li>
+
+                <!-- Reports -->
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/reports*') ? 'active' : '' }}"
+                        href="{{ route('admin.reports.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
+                            <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1"> Reports</span>
+                    </a>
+                </li>
+
+
 
 
 
