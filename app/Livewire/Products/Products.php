@@ -11,6 +11,8 @@ use Livewire\WithFileUploads;
 class Products extends BaseComponent
 {
     public $items, $item, $id, $name, $price, $stock_quantity, $image, $current_image, $description, $sku, $search;
+    public $expandedDescriptions = [];
+
     public $perPage = 10;
     public $loaded;
     public $lastId = null;
@@ -191,5 +193,15 @@ class Products extends BaseComponent
         $this->productManage->deleteProductManage($id);
         $this->toast('Product has been deleted!', 'success');
         $this->resetLoaded();
+    }
+
+
+    public function toggleDescription($productId)
+    {
+        if (isset($this->expandedDescriptions[$productId]) && $this->expandedDescriptions[$productId]) {
+            $this->expandedDescriptions[$productId] = false;
+        } else {
+            $this->expandedDescriptions[$productId] = true;
+        }
     }
 }

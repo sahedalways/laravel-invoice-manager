@@ -35,6 +35,7 @@
                                     <th>SKU</th>
                                     <th>Image</th>
                                     <th>Name</th>
+                                    <th>Description</th>
                                     <th>Price</th>
                                     <th>Stock</th>
                                     <th>Action</th>
@@ -52,10 +53,27 @@
                                                 class="cursor-pointer">
                                         </td>
                                         <td class="fw-bold">{{ $product->name }}</td>
+                                        <td class="fw-bold" style="white-space: normal; word-break: break-word;">
+                                            @php
+                                                $isExpanded = $expandedDescriptions[$product->id] ?? false;
+                                            @endphp
+
+                                            {{ $isExpanded ? $product->description : \Illuminate\Support\Str::limit($product->description, 55, '...') }}
+
+                                            @if (strlen($product->description) > 55)
+                                                <a href="#"
+                                                    wire:click.prevent="toggleDescription({{ $product->id }})"
+                                                    style="font-size: 0.75rem;" class="text-primary ms-1">
+                                                    {{ $isExpanded ? 'View Less' : 'View More' }}
+                                                </a>
+                                            @endif
+                                        </td>
+
                                         <td>${{ number_format($product->price, 2) }}</td>
                                         <td>{{ $product->stock_quantity }}</td>
 
                                         <td>
+
                                             <a data-bs-toggle="modal" data-bs-target="#editProduct"
                                                 wire:click="edit({{ $product->id }})"
                                                 class="badge badge-success text-dark fw-600 text-xs cursor-pointer hover-white">
