@@ -17,12 +17,7 @@ class Pos extends BaseComponent
     public $selectedCustomer = '';
     public $cartTotal = 0;
 
-    protected UserService $userService;
 
-    public function mount(UserService $userService)
-    {
-        $this->userService = $userService;
-    }
 
 
     public function rules()
@@ -133,12 +128,11 @@ class Pos extends BaseComponent
 
 
 
-    public function addCustomer()
+    public function addCustomer(UserService $userService)
     {
         $this->validate($this->rules());
 
-
-        $customer = $this->userService->register([
+        $customer = $userService->register([
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
@@ -148,8 +142,10 @@ class Pos extends BaseComponent
 
         $this->customers = Customer::orderBy('name')->get();
         $this->selectedCustomer = $customer->id;
+        $this->dispatch('refresh-select', ['customerId' => $customer->id]);
 
-        $this->dispatch('close-modal');
+
+        $this->dispatch('closemodal');
         $this->toast('Customer added successfully!', 'success');
 
         // Reset form fields

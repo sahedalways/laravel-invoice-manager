@@ -131,14 +131,16 @@
                     <div class="flex-grow-1">
                         <label class="form-label mb-1" style="font-size:0.85rem; font-weight:600;">Select
                             Customer</label>
-                        <select id="customer-select" wire:model="selectedCustomer" class="form-select form-select-sm">
+                        <select id="customer-select" wire:model="selectedCustomer" class="form-select form-select-sm"
+                            wire:key="customer-select">
                             <option value="">-- Choose Customer --</option>
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">
+                                <option value="{{ $customer->id }}" wire:key="customer-{{ $customer->id }}">
                                     {{ $customer->name }} ({{ $customer->email }}, {{ $customer->phone }})
                                 </option>
                             @endforeach
                         </select>
+
                     </div>
 
                     <!-- Add Customer Button -->
@@ -216,7 +218,7 @@
                                 <label class="form-label">Phone Number <span class="text-danger">*</span></label>
                                 <input type="text" required class="form-control" placeholder="Enter Phone Number"
                                     wire:model="phone" inputmode="numeric" pattern="[0-9]*"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    oninput="this.value = this.value.replace(/[^0-n]/g, '')">
                                 @error('phone')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
@@ -257,24 +259,12 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
 <script>
-    document.addEventListener("livewire:load", function() {
-        new TomSelect("#customer-select", {
-            create: false,
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            onChange: function(value) {
-                @this.set('selectedCustomer', value);
-            }
-        });
+    window.addEventListener('refresh-select', event => {
+        const select = document.getElementById('customer-select');
+        if (select) {
+            select.value = event.detail[0].customerId;
+            select.dispatchEvent(new Event('change'));
+        }
     });
 </script>
