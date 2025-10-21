@@ -391,6 +391,28 @@
 </div>
 
 <script>
+    Livewire.on('printPage', (orderId, categoryDiscAmount, sellerName) => {
+        var $id = orderId;
+        var $categoryDiscount = categoryDiscAmount;
+        var $sellerName = sellerName;
+
+        // Open the new window
+        var printWindow = window.open(
+            '{{ url('admin/orders/print-order/') }}' + '/' + $id + '?categoryDiscount=' +
+            $categoryDiscount + '&sellerName=' + encodeURIComponent($sellerName),
+            '_blank'
+        );
+
+        var checkWindowClosed = setInterval(() => {
+            if (printWindow.closed) {
+                clearInterval(checkWindowClosed);
+                window.location.reload();
+            }
+        }, 500);
+    });
+
+
+
     window.addEventListener('show-order-modal', () => {
         const modal = new bootstrap.Modal(document.getElementById('orderSummaryModal'));
         modal.show();

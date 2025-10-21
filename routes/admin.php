@@ -1,9 +1,10 @@
 <?php
 
-use App\Livewire\Admin\Pos\Pos;
 use App\Livewire\Admin\Customers\Customers;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Invoices\Invoices;
+use App\Livewire\Admin\Order\Pos\Pos;
+use App\Livewire\Admin\Order\PrintInvoice\OrderInvoicePrint;
 use App\Livewire\Admin\Products\Products;
 use App\Livewire\Admin\Reports\Reports;
 use App\Livewire\Admin\Settings\PasswordSettings;
@@ -18,9 +19,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
   /* Admin Dashboard */
   Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-  // pos
-  Route::get('/pos', Pos::class)->name('pos.index');
-
+  // order routes below
+  Route::group(['prefix' => 'orders/'], function () {
+    Route::get('/pos', Pos::class)->name('orders.pos.index');
+    Route::get('/print-order/{id}', OrderInvoicePrint::class)->name('orders.print');
+  });
 
   // Products
   Route::get('/products', Products::class)->name('products.index');

@@ -29,8 +29,8 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('admin/pos*') ? 'active' : '' }}"
-                        href="{{ route('admin.pos.index') }}">
+                    <a class="nav-link {{ Request::is('admin/orders/pos*') ? 'active' : '' }}"
+                        href="{{ route('admin.orders.pos.index') }}">
                         <div
                             class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
                             <i class="fas fa-cash-register text-success text-sm opacity-10"></i>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Pos;
+namespace App\Livewire\Admin\Order\Pos;
 
 use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Customer;
@@ -57,7 +57,7 @@ class Pos extends BaseComponent
         $this->customers = Customer::orderBy('name')->get();
         $this->updateTotal();
 
-        return view('livewire.admin.pos.pos', compact('products'));
+        return view('livewire.admin.order.pos.pos', compact('products'));
     }
 
     public function addToCart($productId)
