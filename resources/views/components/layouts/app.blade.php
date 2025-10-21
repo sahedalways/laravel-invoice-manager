@@ -95,7 +95,15 @@
         });
     </script>
 
-
+    <script>
+        window.addEventListener('print-ticket', event => {
+            const url = event.detail[0].url;
+            const printWindow = window.open(url, '_blank', 'height=600,width=800');
+            printWindow.addEventListener('load', function() {
+                printWindow.print();
+            });
+        });
+    </script>
 
 
     <script>
