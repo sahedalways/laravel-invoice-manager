@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Pos;
 
 use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Product;
 use App\Services\UserService;
 
@@ -17,6 +18,17 @@ class Pos extends BaseComponent
     public $selectedCustomer = '';
     public $cartTotal = 0;
 
+
+    public $orderNumber, $todayDate;
+    public $showOrderModal = false;
+    public $discount = 0;
+    public $finalTotal = 0;
+
+    public function mount()
+    {
+        $this->generateOrderNumber();
+        $this->todayDate = now()->format('d M Y');
+    }
 
 
 
@@ -107,7 +119,7 @@ class Pos extends BaseComponent
         $item['price'] * $item['quantity']);
     }
 
-    public function checkout()
+    public function openOrderModal()
     {
         if (!$this->selectedCustomer) {
             $this->toast('Select a customer first!', 'error');
@@ -119,12 +131,51 @@ class Pos extends BaseComponent
             return;
         }
 
-        // Example only — integrate with your Invoice/Order logic here
-        $this->clearCart();
-
-        $this->toast('Order Placed successfully!', 'success');
+        $this->finalTotal = $this->cartTotal;
+        $this->showOrderModal = true;
+        $this->dispatch('show-order-modal');
     }
 
+    public function updatedDiscount($value)
+    {
+        $discountValue = is_numeric($value) ? $value : 0;
+        $this->finalTotal = $this->cartTotal - $discountValue;
+    }
+
+    public function confirmOrder()
+    {
+        // Save order into DB
+        $order = Order::create([
+            'order_number' => $this->orderNumber,
+            'customer_id' => $this->selectedCustomer,
+            'discount'    => $this->discount,
+            'total_price' => $this->finalTotal,
+            'status'      => 'completed',
+            'date'        => now(),
+        ]);
+
+
+        foreach ($this->cart as $item) {
+            $order->details()->create([
+                'order_id' => $order->id,
+                'product_id' => $item['id'],
+                'qty'        => $item['quantity'],
+                'price'      => $item['price'],
+                'total'      => $item['price'] * $item['quantity'],
+            ]);
+        }
+
+        // Clear cart and reset
+        $this->clearCart();
+        $this->generateOrderNumber();
+        $this->discount = 0;
+        $this->selectedCustomer = '';
+        $this->finalTotal = 0;
+        $this->showOrderModal = false;
+
+        $this->dispatch('close-order-modal');
+        $this->toast('Order placed successfully!', 'success');
+    }
 
 
 
@@ -142,7 +193,6 @@ class Pos extends BaseComponent
 
         $this->customers = Customer::orderBy('name')->get();
         $this->selectedCustomer = $customer->id;
-        $this->dispatch('refresh-select', ['customerId' => $customer->id]);
 
 
         $this->dispatch('closemodal');
@@ -150,5 +200,15 @@ class Pos extends BaseComponent
 
         // Reset form fields
         $this->reset(['name', 'email', 'phone', 'address']);
+    }
+
+
+
+    private function generateOrderNumber()
+    {
+        $lastOrder = Order::latest('id')->first();
+        $nextNumber = $lastOrder ? $lastOrder->id + 1 : 1;
+
+        $this->orderNumber = 'ORD-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
 }

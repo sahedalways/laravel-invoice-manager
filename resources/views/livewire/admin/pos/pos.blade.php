@@ -76,8 +76,16 @@
     <!-- Right: Cart & Customer -->
     <div class="col-lg-5 ">
         <div class="card "
-            style="margin-top:90px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:none;">
-
+            style="margin-top:92px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.12); border:none;">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center"
+                style="padding:8px 12px;">
+                <div>
+                    <strong>Order No:</strong> <span>{{ $orderNumber }}</span>
+                </div>
+                <div>
+                    <strong>Date:</strong> <span>{{ $todayDate }}</span>
+                </div>
+            </div>
 
             <!-- Cart Table -->
             <div style="max-height:480px; overflow-y:auto; padding:12px;">
@@ -131,8 +139,9 @@
                     <div class="flex-grow-1">
                         <label class="form-label mb-1" style="font-size:0.85rem; font-weight:600;">Select
                             Customer</label>
-                        <select id="customer-select" wire:model="selectedCustomer" class="form-select form-select-sm"
-                            wire:key="customer-select">
+                        <select id="customer-select" wire:model="selectedCustomer"
+                            wire:key="customer-select-{{ count($customers) }}" class="form-select form-select-sm">
+
                             <option value="">-- Choose Customer --</option>
                             @foreach ($customers as $customer)
                                 <option value="{{ $customer->id }}" wire:key="customer-{{ $customer->id }}">
@@ -163,9 +172,9 @@
 
                 <!-- Buttons -->
                 <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button wire:click="checkout"
+                    <button wire:click="openOrderModal"
                         style="flex:1; background-color:#1E3A8A; color:white; padding:8px 0; border:none; border-radius:6px; font-weight:600; cursor:pointer;">
-                        <i class="fas fa-credit-card me-1"></i> Pay
+                        <i class="fas fa-credit-card me-1"></i> Checkout
                     </button>
                     <button wire:click="clearCart"
                         style="background-color:#dc3545; color:white; padding:8px 0; border:none; border-radius:6px; font-weight:600; cursor:pointer; min-width:90px;">
@@ -257,14 +266,139 @@
             </div>
         </div>
     </div>
+
+    <div wire:ignore.self class="modal fade" id="orderSummaryModal" tabindex="-1" aria-hidden="true"
+        data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-xl rounded-4 overflow-hidden" style="background-color:#f8faff;">
+
+                <!-- Header -->
+                <div class="modal-header border-0 py-3 px-4 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                            style="width:40px; height:40px;">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h5 class="modal-title fw-semibold mb-0 text-dark">Order Summary</h5>
+                    </div>
+                    <button type="button" class="btn btn-light border-0" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="fas fa-times text-muted"></i>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body p-4">
+
+                    <!-- Order Info -->
+                    <div class="d-flex justify-content-between align-items-center rounded-3 border p-3 bg-white mb-4">
+                        <div class="fw-semibold text-dark">
+                            <i class="fas fa-hashtag text-primary me-1"></i>
+                            Order No: <span class="text-primary">{{ $orderNumber }}</span>
+                        </div>
+                        <div class="text-muted small">
+                            <i class="fas fa-calendar-day me-1"></i>
+                            {{ $todayDate }}
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="border rounded-3 bg-white shadow-sm p-3 mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                                style="width:50px; height:50px; font-weight:600;">
+                                {{ strtoupper(substr(optional($customers->firstWhere('id', $selectedCustomer))->name ?? 'C', 0, 1)) }}
+                            </div>
+                            <div>
+                                @php $customer = $customers->firstWhere('id', $selectedCustomer); @endphp
+                                @if ($customer)
+                                    <h6 class="mb-0 fw-bold text-dark">{{ $customer->name }}</h6>
+                                    <small class="text-muted"><i
+                                            class="fas fa-envelope me-1"></i>{{ $customer->email }}</small><br>
+                                    <small class="text-muted"><i
+                                            class="fas fa-phone me-1"></i>{{ $customer->phone }}</small>
+                                @else
+                                    <p class="text-muted mb-0">No customer selected</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="border rounded-3 bg-white shadow-sm p-0 mb-4">
+                        <div class="px-3 py-2 border-bottom bg-light fw-semibold text-secondary">
+                            <i class="fas fa-shopping-cart me-2"></i>Cart Items
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-borderless mb-0 align-middle">
+                                <thead class="bg-light text-muted">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-end">Price</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($cart as $item)
+                                        <tr class="border-top">
+                                            <td>{{ $item['name'] }}</td>
+                                            <td class="text-center">{{ $item['quantity'] }}</td>
+                                            <td class="text-end">${{ number_format($item['price'], 2) }}</td>
+                                            <td class="text-end fw-semibold text-success">
+                                                ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="border rounded-3 bg-white shadow-sm p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <label class="fw-semibold text-dark mb-0">Discount</label>
+                            <input type="number" class="form-control form-control-sm text-end w-25"
+                                placeholder="0.00" wire:model.live="discount">
+                        </div>
+                        <hr class="my-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold text-secondary mb-0">Gross Total</h6>
+                            <h5 class="fw-bold text-primary mb-0">${{ number_format($finalTotal, 2) }}</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer border-0 bg-white shadow-sm py-3 px-4 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                        data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4 fw-semibold"
+                        wire:click="confirmOrder">
+                        <i class="fas fa-check me-1"></i> Confirm Order
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
 </div>
 
 <script>
-    window.addEventListener('refresh-select', event => {
-        const select = document.getElementById('customer-select');
-        if (select) {
-            select.value = event.detail[0].customerId;
-            select.dispatchEvent(new Event('change'));
-        }
+    window.addEventListener('show-order-modal', () => {
+        const modal = new bootstrap.Modal(document.getElementById('orderSummaryModal'));
+        modal.show();
+    });
+
+    window.addEventListener('close-order-modal', () => {
+        const modalEl = document.getElementById('orderSummaryModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
     });
 </script>
