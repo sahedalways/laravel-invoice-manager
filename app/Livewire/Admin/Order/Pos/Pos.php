@@ -31,6 +31,7 @@ class Pos extends BaseComponent
     {
         $this->generateOrderNumber();
         $this->todayDate = now()->format('d M Y');
+        $this->loadCartFromSession();
     }
 
 
@@ -78,6 +79,7 @@ class Pos extends BaseComponent
         }
 
         $this->updateTotal();
+        $this->saveCartToSession();
     }
 
     public function increaseQty($productId)
@@ -86,6 +88,7 @@ class Pos extends BaseComponent
             if ($this->cart[$productId]['quantity'] < $this->cart[$productId]['stock_quantity']) {
                 $this->cart[$productId]['quantity']++;
                 $this->updateTotal();
+                $this->saveCartToSession();
             } else {
                 $this->toast("Cannot exceed available stock!", 'error');
             }
@@ -101,6 +104,7 @@ class Pos extends BaseComponent
                 unset($this->cart[$productId]);
             }
             $this->updateTotal();
+            $this->saveCartToSession();
         }
     }
 
@@ -108,12 +112,14 @@ class Pos extends BaseComponent
     {
         unset($this->cart[$productId]);
         $this->updateTotal();
+        $this->saveCartToSession();
     }
 
     public function clearCart()
     {
         $this->cart = [];
         $this->cartTotal = 0;
+        session()->forget('pos_cart');
     }
 
     private function updateTotal()
@@ -124,6 +130,7 @@ class Pos extends BaseComponent
 
     public function openOrderModal()
     {
+
         if (!$this->selectedCustomer) {
             $this->toast('Select a customer first!', 'error');
             return;
@@ -172,9 +179,14 @@ class Pos extends BaseComponent
         $this->selectedCustomer = '';
         $this->finalTotal = 0;
         $this->showOrderModal = false;
+        session()->forget('pos_cart');
 
         $this->dispatch('close-order-modal');
         $this->toast('Order placed successfully!', 'success');
+
+        $this->dispatch('print-ticket', [
+            'url' => route('admin.orders.print', $order->id)
+        ]);
     }
 
 
@@ -210,5 +222,17 @@ class Pos extends BaseComponent
         $nextNumber = $lastOrder ? $lastOrder->id + 1 : 1;
 
         $this->orderNumber = 'ORD-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    }
+
+
+    private function loadCartFromSession()
+    {
+        $this->cart = session()->get('pos_cart', []);
+        $this->updateTotal();
+    }
+
+    private function saveCartToSession()
+    {
+        session()->put('pos_cart', $this->cart);
     }
 }

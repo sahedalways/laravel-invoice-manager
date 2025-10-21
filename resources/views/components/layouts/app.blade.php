@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-
     <title>@yield('title', siteSetting()->site_title)</title>
 
     <link rel="icon" type="image/png" href="{{ siteSetting()->favicon_url }}">
@@ -96,7 +94,6 @@
             };
         });
     </script>
-
 
 
 

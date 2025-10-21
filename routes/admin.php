@@ -20,9 +20,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
   Route::get('dashboard', Dashboard::class)->name('dashboard');
 
   // order routes below
-  Route::group(['prefix' => 'orders/'], function () {
-    Route::get('/pos', Pos::class)->name('orders.pos.index');
-    Route::get('/print-order/{id}', OrderInvoicePrint::class)->name('orders.print');
+  Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
+    Route::get('/pos', Pos::class)->name('pos.index');
+    Route::get('/print-order/{id}', OrderInvoicePrint::class)->name('print');
   });
 
   // Products
