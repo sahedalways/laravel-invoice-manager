@@ -6,10 +6,12 @@ use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\OrderManage\OrderService as OrderManageOrderService;
 use App\Services\UserService;
 
 class Pos extends BaseComponent
 {
+    public $orderService;
     public $name, $email, $phone, $address;
     public $search = '';
     public $cart = [];
@@ -23,6 +25,7 @@ class Pos extends BaseComponent
     public $showOrderModal = false;
     public $discount = 0;
     public $finalTotal = 0;
+
 
     public function mount()
     {
@@ -142,28 +145,25 @@ class Pos extends BaseComponent
         $this->finalTotal = $this->cartTotal - $discountValue;
     }
 
-    public function confirmOrder()
+    public function confirmOrder(OrderManageOrderService $orderService)
     {
-        // Save order into DB
-        $order = Order::create([
-            'order_number' => $this->orderNumber,
-            'customer_id' => $this->selectedCustomer,
-            'discount'    => $this->discount,
-            'total_price' => $this->finalTotal,
-            'status'      => 'completed',
-            'date'        => now(),
-        ]);
-
-
-        foreach ($this->cart as $item) {
-            $order->details()->create([
-                'order_id' => $order->id,
-                'product_id' => $item['id'],
-                'qty'        => $item['quantity'],
-                'price'      => $item['price'],
-                'total'      => $item['price'] * $item['quantity'],
-            ]);
+        if (!$this->selectedCustomer) {
+            $this->toast('Select a customer first!', 'error');
+            return;
         }
+
+        if (empty($this->cart)) {
+            $this->toast('Cart is empty!', 'error');
+            return;
+        }
+
+        // Create order via service
+        $order = $orderService->createOrder(
+            $this->selectedCustomer,
+            $this->cart,
+            $this->discount,
+            $this->orderNumber
+        );
 
         // Clear cart and reset
         $this->clearCart();
