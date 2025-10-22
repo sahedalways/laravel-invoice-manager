@@ -12,6 +12,7 @@ class OrderDetail extends Model
         'qty',
         'price',
         'total',
+        'status'
     ];
 
     // Relationships

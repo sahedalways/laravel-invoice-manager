@@ -2,7 +2,6 @@
 
 use App\Livewire\Admin\Customers\Customers;
 use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\Invoices\Invoices;
 use App\Livewire\Admin\Order\Pos\Pos;
 use App\Livewire\Admin\Order\PrintInvoice\OrderInvoicePrint;
 use App\Livewire\Admin\Products\Products;
@@ -34,9 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
   // Customers
   Route::get('/customers', Customers::class)->name('customers.index');
 
-
-  // Invoices
-  Route::get('/invoices', Invoices::class)->name('invoices.index');
 
   // Reports
   Route::get('/reports', Reports::class)->name('reports.index');

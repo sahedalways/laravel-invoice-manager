@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('qty');
             $table->decimal('price', 10, 2);
             $table->decimal('total', 10, 2);
+            $table->enum('status', ['pending', 'completed', 'cancelled', 'returned'])->default('completed');
             $table->timestamps();
         });
     }

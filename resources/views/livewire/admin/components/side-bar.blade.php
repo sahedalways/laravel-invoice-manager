@@ -80,17 +80,7 @@
                     </a>
                 </li>
 
-                <!-- Invoices -->
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('admin/invoices*') ? 'active' : '' }}"
-                        href="{{ route('admin.invoices.index') }}">
-                        <div
-                            class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                            <i class="ni ni-credit-card text-danger text-sm opacity-10"></i>
-                        </div>
-                        <span class="nav-link-text ms-1"> Invoices</span>
-                    </a>
-                </li>
+
 
                 <!-- Reports -->
                 <li class="nav-item">
@@ -100,7 +90,7 @@
                             class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
                             <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1"> Reports</span>
+                        <span class="nav-link-text ms-1"> Reports & Manage</span>
                     </a>
                 </li>
 
