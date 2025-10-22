@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin\Customers;
 
+use App\Exports\CustomersExport;
 use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Customer;
 use App\Services\UserService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\Rule;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class Customers extends BaseComponent
 {
@@ -220,5 +222,26 @@ class Customers extends BaseComponent
 
         $this->toast('Customer has been deleted!', 'success');
         $this->resetLoaded();
+    }
+
+
+    public function exportCustomers($type)
+    {
+        $customers = Customer::orderBy('id', 'desc')->get();
+
+        if ($type === 'pdf') {
+            $pdf = Pdf::loadView('exports.customers-pdf', compact('customers'));
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->output();
+            }, 'customers.pdf');
+        }
+
+        if ($type === 'excel') {
+            return Excel::download(new CustomersExport($customers), 'customers.xlsx');
+        }
+
+        if ($type === 'csv') {
+            return Excel::download(new CustomersExport($customers), 'customers.csv');
+        }
     }
 }

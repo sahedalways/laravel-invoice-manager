@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Admin\Stocks;
 
+use App\Exports\StockExport;
 use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Product;
 use App\Services\StockManage\StockService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Stocks extends BaseComponent
 {
@@ -108,5 +111,28 @@ class Stocks extends BaseComponent
         $this->stockHistory = $stockData['history'];
 
         $this->dispatch('openStockModal');
+    }
+
+
+    public function exportStock($type)
+    {
+        $products = $this->loaded->map(function ($p) {
+            return [
+                'SKU' => $p->sku,
+                'Name' => $p->name,
+                'Stock' => $p->stock_quantity
+            ];
+        })->toArray();
+
+        $fileName = 'stock_report_' . now()->format('Ymd_His');
+
+        if ($type === 'pdf') {
+            $pdf = Pdf::loadView('exports.stock_pdf', compact('products'));
+            return response()->streamDownload(fn() => print($pdf->output()), $fileName . '.pdf');
+        } elseif ($type === 'excel') {
+            return Excel::download(new StockExport($products), $fileName . '.xlsx');
+        } elseif ($type === 'csv') {
+            return Excel::download(new StockExport($products), $fileName . '.csv');
+        }
     }
 }

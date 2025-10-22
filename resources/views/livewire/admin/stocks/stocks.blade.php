@@ -1,8 +1,22 @@
 <div>
-    <div class="row align-items-center justify-content-between mb-4">
-        <div class="col">
-            <h5 class="fw-500 text-white">Stock Management</h5>
+    <div class="row align-items-center justify-content-between mb-4 mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-500 text-white">Stock Management</h5>
+            </div>
+            <div class="d-flex gap-2">
+                <button wire:click="exportStock('pdf')" class="btn btn-sm btn-white text-primary">
+                    <i class="fa fa-file-pdf me-1"></i> PDF
+                </button>
+                <button wire:click="exportStock('excel')" class="btn btn-sm btn-white text-success">
+                    <i class="fa fa-file-excel me-1"></i> Excel
+                </button>
+                <button wire:click="exportStock('csv')" class="btn btn-sm btn-white text-info">
+                    <i class="fa fa-file-csv me-1"></i> CSV
+                </button>
+            </div>
         </div>
+
 
     </div>
 

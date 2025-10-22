@@ -1,15 +1,33 @@
 <div>
-    <div class="row align-items-center justify-content-between mb-4">
-        <div class="col">
-            <h5 class="fw-500 text-white">Product Management</h5>
+    <div class="row align-items-center mb-4 mt-5">
+        <div class="col d-flex align-items-center">
+            <!-- Left: Title -->
+            <h5 class="fw-500 text-white mb-0">Product Management</h5>
         </div>
-        <div class="col-auto">
+
+        <!-- Center: Add Button -->
+        <div class="col d-flex justify-content-center gap-2">
+
+            <button wire:click="exportProducts('pdf')" class="btn btn-sm btn-white text-primary">
+                <i class="fa fa-file-pdf me-1"></i> PDF
+            </button>
+            <button wire:click="exportProducts('excel')" class="btn btn-sm btn-white text-success">
+                <i class="fa fa-file-excel me-1"></i> Excel
+            </button>
+            <button wire:click="exportProducts('csv')" class="btn btn-sm btn-white text-info">
+                <i class="fa fa-file-csv me-1"></i> CSV
+            </button>
+        </div>
+
+        <!-- Right: Export Buttons -->
+        <div class="col d-flex justify-content-end gap-2">
             <a data-bs-toggle="modal" data-bs-target="#addProduct" wire:click="resetInputFields"
                 class="btn btn-icon btn-3 btn-white text-primary mb-0">
                 <i class="fa fa-plus me-2"></i> Add New Product
             </a>
         </div>
     </div>
+
 
     <div class="row">
         <div class="col-12">
@@ -147,7 +165,8 @@
 
                             <div class="col-md-12 mb-2">
                                 <label class="form-label">Image <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" wire:model="image" required accept="image/*">
+                                <input type="file" class="form-control" wire:model="image" required
+                                    accept="image/*">
                                 @if ($image)
                                     <img src="{{ $image->temporaryUrl() }}" class="img-fluid mt-2 rounded shadow"
                                         width="80">

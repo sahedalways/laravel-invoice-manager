@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Admin\Products;
 
+use App\Exports\ProductsExport;
 use App\Livewire\Admin\Components\BaseComponent;
 use App\Models\Product;
 use App\Services\ProductManage\ProductManageService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Products extends BaseComponent
 {
@@ -202,6 +205,31 @@ class Products extends BaseComponent
             $this->expandedDescriptions[$productId] = false;
         } else {
             $this->expandedDescriptions[$productId] = true;
+        }
+    }
+
+
+    public function exportProducts($type)
+    {
+        $products = $this->loaded->map(function ($p) {
+            return [
+                'SKU' => $p->sku,
+                'Name' => $p->name,
+                'Description' => $p->description,
+                'Price' => $p->price,
+                'Stock' => $p->stock_quantity
+            ];
+        })->toArray();
+
+        $fileName = 'products_report_' . now()->format('Ymd_His');
+
+        if ($type === 'pdf') {
+            $pdf = Pdf::loadView('exports.products_pdf', compact('products'));
+            return response()->streamDownload(fn() => print($pdf->output()), $fileName . '.pdf');
+        } elseif ($type === 'excel') {
+            return Excel::download(new ProductsExport($products), $fileName . '.xlsx');
+        } elseif ($type === 'csv') {
+            return Excel::download(new ProductsExport($products), $fileName . '.csv');
         }
     }
 }
