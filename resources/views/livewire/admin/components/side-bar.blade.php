@@ -121,6 +121,14 @@
                             </li>
 
 
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('admin/settings/currency') ? 'active' : '' }}"
+                                    href="{{ route('admin.settings.currency') }}">
+                                    <i class="fas fa-dollar-sign sidenav-mini-icon side-bar-inner"></i>
+                                    <span class="sidenav-normal side-bar-inner"> Currency Settings </span>
+                                </a>
+                            </li>
+
 
 
                             <!-- Password Settings -->

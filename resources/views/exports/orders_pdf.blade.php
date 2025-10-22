@@ -84,7 +84,7 @@
                             {{ $order['Status'] }}
                         </span>
                     </td>
-                    <td>${{ number_format($order['Total'], 2) }}</td>
+                    <td>{{ currency_symbol() }}{{ number_format($order['Total'], 2) }}</td>
                     <td>Cash</td>
                 </tr>
             @endforeach

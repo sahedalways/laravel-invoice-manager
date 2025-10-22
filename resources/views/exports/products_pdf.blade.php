@@ -54,7 +54,7 @@
                     <td>{{ $product['SKU'] }}</td>
                     <td>{{ $product['Name'] }}</td>
                     <td>{{ $product['Description'] }}</td>
-                    <td>${{ number_format($product['Price'], 2) }}</td>
+                    <td>{{ currency_symbol() }}{{ number_format($product['Price'], 2) }}</td>
                     <td>{{ $product['Stock'] }}</td>
                 </tr>
             @endforeach

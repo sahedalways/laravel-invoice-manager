@@ -1,5 +1,5 @@
 <div>
-    <div class="row align-items-center justify-content-between mb-4 mt-5">
+    <div class="row align-items-center justify-content-between mb-4">
         <div class="col">
             <h5 class="fw-500 text-white">Site Settings</h5>
         </div>

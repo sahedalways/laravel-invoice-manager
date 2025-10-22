@@ -91,7 +91,7 @@
                                                 {{ ucfirst($order->status) }}
                                             </span>
                                         </td>
-                                        <td>${{ number_format($order->total_price, 2) }}</td>
+                                        <td>{{ currency_symbol() }}{{ number_format($order->total_price, 2) }}</td>
                                         <td>Cash</td>
                                         <td>
                                             <a href="#" wire:click="viewOrder({{ $order->id }})"
@@ -206,8 +206,8 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $item->product->name ?? 'N/A' }}</td>
                                             <td>{{ $item->qty }}</td>
-                                            <td>${{ number_format($item->price, 2) }}</td>
-                                            <td>${{ number_format($item->total, 2) }}</td>
+                                            <td>{{ currency_symbol() }}{{ number_format($item->price, 2) }}</td>
+                                            <td>{{ currency_symbol() }}{{ number_format($item->total, 2) }}</td>
                                             <td>
                                                 @if ($item->status != 'returned')
                                                     <button
@@ -226,7 +226,7 @@
                         <!-- Total Amount -->
                         <div class="text-end mt-3">
                             <h5>Total: <span
-                                    class="badge bg-success fs-6">${{ number_format($selectedOrder->total_price, 2) }}</span>
+                                    class="badge bg-success fs-6">{{ currency_symbol() }}{{ number_format($selectedOrder->total_price, 2) }}</span>
                             </h5>
                         </div>
                     </div>

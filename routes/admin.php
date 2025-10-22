@@ -6,6 +6,7 @@ use App\Livewire\Admin\Order\Pos\Pos;
 use App\Livewire\Admin\Order\PrintInvoice\OrderInvoicePrint;
 use App\Livewire\Admin\Products\Products;
 use App\Livewire\Admin\Reports\Reports;
+use App\Livewire\Admin\Settings\CurrencySettings;
 use App\Livewire\Admin\Settings\PasswordSettings;
 use App\Livewire\Admin\Settings\SiteSettings;
 use App\Livewire\Admin\Stocks\Stocks;
@@ -41,6 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin'], 'as' => 'a
   // for settings group routes
   Route::prefix('/settings')->name('settings.')->group(function () {
     Route::get('/site', SiteSettings::class)->name('site');
+    Route::get('/currency', CurrencySettings::class)->name('currency');
     Route::get('/password', PasswordSettings::class)->name('password');
   });
 });

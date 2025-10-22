@@ -36,7 +36,7 @@
                                         style="width:100%; height:100px; object-fit:cover; border-bottom:1px solid #f0f0f0;">
                                     <span
                                         style="position:absolute; top:6px; left:6px; background-color:#1E3A8A; color:white; font-size:0.65rem; padding:2px 6px; border-radius:4px; font-weight:600;">
-                                        ${{ number_format($product->price, 2) }}
+                                        {{ currency_symbol() }}{{ number_format($product->price, 2) }}
                                     </span>
                                 </div>
 
@@ -115,7 +115,8 @@
                                                 style="border:none; background:#f0f0f0; padding:2px 6px; border-radius:4px; cursor:pointer;">+</button>
                                         </div>
                                     </td>
-                                    <td style="padding:6px; text-align:right;">${{ number_format($item['price'], 2) }}
+                                    <td style="padding:6px; text-align:right;">
+                                        {{ currency_symbol() }}{{ number_format($item['price'], 2) }}
                                     </td>
                                     <td style="padding:6px; text-align:center;">
                                         <button wire:click="removeItem({{ $item['id'] }})"
@@ -167,7 +168,7 @@
                 <div
                     style="display:flex; justify-content:space-between; font-weight:600; font-size:0.95rem; padding-top:6px; border-top:1px solid #e0e0e0;">
                     <span>Gross Total:</span>
-                    <span>${{ number_format($cartTotal, 2) }}</span>
+                    <span>{{ currency_symbol() }}{{ number_format($cartTotal, 2) }}</span>
                 </div>
 
                 <!-- Buttons -->
@@ -344,9 +345,10 @@
                                         <tr class="border-top">
                                             <td>{{ $item['name'] }}</td>
                                             <td class="text-center">{{ $item['quantity'] }}</td>
-                                            <td class="text-end">${{ number_format($item['price'], 2) }}</td>
+                                            <td class="text-end">
+                                                {{ currency_symbol() }}{{ number_format($item['price'], 2) }}</td>
                                             <td class="text-end fw-semibold text-success">
-                                                ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                                {{ currency_symbol() }}{{ number_format($item['price'] * $item['quantity'], 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -365,7 +367,8 @@
                         <hr class="my-2">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6 class="fw-bold text-secondary mb-0">Gross Total</h6>
-                            <h5 class="fw-bold text-primary mb-0">${{ number_format($finalTotal, 2) }}</h5>
+                            <h5 class="fw-bold text-primary mb-0">
+                                {{ currency_symbol() }}{{ number_format($finalTotal, 2) }}</h5>
                         </div>
                     </div>
                 </div>

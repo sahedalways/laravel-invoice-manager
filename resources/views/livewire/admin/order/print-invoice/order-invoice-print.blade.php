@@ -207,12 +207,12 @@
                             <td class="text-center">{{ $item->qty }}</td>
                             <td class="text-center">{{ $item->discount ?? ($order->discount ?? 0) }}%</td>
                             <td class="text-center">{{ number_format($item->tax ?? 0, 2) }}</td>
-                            <td class="text-right">${{ number_format($item->total, 2) }}</td>
+                            <td class="text-right">{{ currency_symbol() }}{{ number_format($item->total, 2) }}</td>
                         </tr>
                     @endforeach
                     <tr class="total-row">
                         <td colspan="6" class="text-right">Total:</td>
-                        <td class="text-right">${{ number_format($order->total_price, 2) }}</td>
+                        <td class="text-right">{{ currency_symbol() }}{{ number_format($order->total_price, 2) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -222,10 +222,10 @@
         <div class="invoice-section payment-info">
             <div class="section-title">Payment Information</div>
             <p><strong>Payment Mode:</strong> Cash</p>
-            <p><strong>Gross Total:</strong> ${{ number_format($order->total_price, 2) }}</p>
+            <p><strong>Gross Total:</strong> {{ currency_symbol() }}{{ number_format($order->total_price, 2) }}</p>
             <p><strong>Discount:</strong> {{ $order->discount ?? 0 }}%</p>
-            <p><strong>Paid Amount:</strong> ${{ number_format($order->total_price, 2) }}</p>
-            <p><strong>Due Amount:</strong> $0.00</p>
+            <p><strong>Paid Amount:</strong> {{ currency_symbol() }}{{ number_format($order->total_price, 2) }}</p>
+            <p><strong>Due Amount:</strong> {{ currency_symbol() }}0.00</p>
         </div>
 
         <div class="invoice-footer">

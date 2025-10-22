@@ -87,7 +87,8 @@
                                             @endif
                                         </td>
 
-                                        <td>${{ number_format($product->price, 2) }}</td>
+                                        <td>{{ currency_symbol() }}{{ number_format($product->price, 2) }}</td>
+
                                         <td>{{ $product->stock_quantity }}</td>
 
                                         <td>
