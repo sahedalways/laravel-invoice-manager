@@ -20,9 +20,10 @@ if (!function_exists('siteSetting')) {
      */
     function currency_symbol()
     {
-      $currency = Currency::first();
-
-      return $currency ? $currency->symbol : '$';
+      return cache()->remember('currency_symbol', 60 * 60, function () {
+        $currency = Currency::first();
+        return $currency ? $currency->symbol : '$';
+      });
     }
   }
 }
