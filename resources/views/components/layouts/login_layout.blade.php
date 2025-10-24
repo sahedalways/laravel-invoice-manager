@@ -16,7 +16,7 @@
     <link href="{{ asset('assets/js/plugins/toastr.min.css') }}" rel="stylesheet">
 </head>
 
-<body class="g-sidenav-show">
+<body class="g-sidenav-show d-flex flex-column min-vh-100">
     @yield('content')
 
     {{-- Scripts --}}
@@ -43,6 +43,7 @@
             });
         });
     </script>
+    <x-footer />
 </body>
 
 </html>

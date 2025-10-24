@@ -181,7 +181,7 @@
                                         <p class="mb-1"><strong>Total Items:</strong>
                                             {{ $selectedOrder->details->count() }}</p>
                                         <p class="mb-0"><strong>Payment Status:</strong>
-                                            {{ ucfirst($selectedOrder->payment_status) }}</p>
+                                            Cash</p>
                                     </div>
                                 </div>
                             </div>
@@ -224,11 +224,41 @@
                         </div>
 
                         <!-- Total Amount -->
-                        <div class="text-end mt-3">
-                            <h5>Total: <span
-                                    class="badge bg-success fs-6">{{ currency_symbol() }}{{ number_format($selectedOrder->total_price, 2) }}</span>
-                            </h5>
+                        <div class="row justify-content-end mt-4">
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body p-3">
+
+
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Subtotal</span>
+                                            <span class="badge bg-secondary">
+                                                {{ currency_symbol() }}{{ number_format($selectedOrder->total_price + $selectedOrder->discount, 2) }}
+                                            </span>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Discount</span>
+                                            <span class="badge bg-warning text-dark">
+                                                -
+                                                {{ currency_symbol() }}{{ number_format($selectedOrder->discount, 2) }}
+                                            </span>
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="d-flex justify-content-between">
+                                            <span class="fw-bold">Total</span>
+                                            <span class="badge bg-success fs-6">
+                                                {{ currency_symbol() }}{{ number_format($selectedOrder->total_price, 2) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
                     </div>
                 @endif
             </div>

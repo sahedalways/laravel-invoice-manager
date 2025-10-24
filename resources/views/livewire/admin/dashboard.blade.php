@@ -1,68 +1,79 @@
 @section('title', siteSetting()->site_title)
 
-<div>
+<div class="mt-5">
+
     <div class="row" wire:poll.60s>
-        <div class="col-lg-12">
-            <div class="row mt-5 g-4">
 
-                {{-- @php
-                    $cardStylePrimary = 'background-color: #f0f4f8; color: #111827; border-radius: 12px;';
-                    $cardStyleSecondary = 'background-color: #e3eaf2; color: #111827; border-radius: 12px;';
-                @endphp
+        <div class="col-12">
+            <div class="row g-4 mb-4">
+                <x-dashboard-card title="Today’s Sales" :value="'$' . number_format($todaySales, 2)" icon="fa-dollar-sign" />
+                <x-dashboard-card title="Total Sales" :value="'$' . number_format($totalSales, 2)" icon="fa-coins" />
+                <x-dashboard-card title="Total Products" :value="$totalProducts" icon="fa-box" />
+                <x-dashboard-card title="Total Customers" :value="$totalCustomers" icon="fa-users" />
+                <x-dashboard-card title="Completed Orders" :value="$completedOrders" icon="fa-check-circle" />
+                <x-dashboard-card title="Returned Orders" :value="$returnedOrders" icon="fa-undo" />
+                <x-dashboard-card title="Pending Orders" :value="$pendingOrders" icon="fa-clock" />
+                <x-dashboard-card title="Processing Orders" :value="$processingOrders" icon="fa-spinner" />
+            </div>
+        </div>
 
-                <!-- Today Bookings -->
-                <x-dashboard-card title="Today’s Bookings" :value="$todaysBookings" icon="fa-calendar-day"
-                    style="{{ $cardStylePrimary }}" />
+        <!-- Chart Below Cards -->
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="fw-500 mb-0">Sales Overview</h5>
+                </div>
+                <div class="card-body" wire:ignore>
+                    <canvas id="orders-chart" height="300px"></canvas>
+                </div>
+            </div>
 
-                <!-- Monthly Bookings -->
-                <x-dashboard-card title="Monthly Bookings" :value="$monthlyBookings" icon="fa-calendar-alt"
-                    style="{{ $cardStylePrimary }}" />
-
-                <!-- Yearly Bookings -->
-                <x-dashboard-card title="Yearly Bookings" :value="$yearlyBookings" icon="fa-calendar"
-                    style="{{ $cardStylePrimary }}" />
-
-                <!-- Total Profit -->
-                <x-dashboard-card title="Total Profit" :value="'৳' . number_format($totalProfit, 2)" icon="fa-dollar-sign"
-                    style="{{ $cardStylePrimary }}" />
-
-                <!-- Pending Bookings -->
-                <x-dashboard-card title="Pending Bookings" :value="$pendingBookings" icon="fa-clock"
-                    style="{{ $cardStyleSecondary }}" />
-
-                <!-- Confirmed Bookings -->
-                <x-dashboard-card title="Confirmed Bookings" :value="$confirmedBookings" icon="fa-thumbs-up"
-                    style="{{ $cardStyleSecondary }}" />
-
-                <!-- Cancelled Bookings -->
-                <x-dashboard-card title="Cancelled Bookings" :value="$cancelledBookings" icon="fa-times-circle"
-                    style="{{ $cardStyleSecondary }}" />
-
-                <!-- Completed Bookings -->
-                <x-dashboard-card title="Completed Bookings" :value="$completedBookings" icon="fa-check-circle"
-                    style="{{ $cardStyleSecondary }}" />
-
-
-
-                <!-- Total Revenue -->
-                <x-dashboard-card title="Total Revenue" :value="'৳' . number_format($totalRevenue, 2)" icon="fa-coins"
-                    style="{{ $cardStylePrimary }}" />
-
-
-
-                <!-- Total Users -->
-                <x-dashboard-card title="Total Users" :value="$totalUsers" icon="fa-users"
-                    style="{{ $cardStylePrimary }}" />
-
-                <!-- Customer Feedbacks -->
-                <x-dashboard-card title="Customer Feedbacks" :value="$customerFeedbacks" icon="fa-comments"
-                    style="{{ $cardStylePrimary }}" />
-
-                <!-- Hotels & Resorts -->
-                <x-dashboard-card title="Hotels & Resorts" :value="$hotelsResorts" icon="fa-hotel"
-                    style="{{ $cardStylePrimary }}" /> --}}
-
+            <!-- Status Badges -->
+            <div class="d-flex justify-content-between mt-2">
+                <span class="badge badge-md badge-dot ms-2"><i class="bg-secondary"></i> Pending</span>
+                <span class="badge badge-md badge-dot"><i class="bg-warning"></i> Processing</span>
+                <span class="badge badge-md badge-dot"><i class="bg-success"></i> Completed</span>
+                <span class="badge badge-md badge-dot me-2"><i class="bg-danger"></i> Returned</span>
             </div>
         </div>
     </div>
+
+    <input type="hidden" id="chartdata" value="{{ json_encode($ordersChartData) }}">
+
 </div>
+
+@push('js')
+    <script>
+        "use strict";
+
+        const ctx = document.getElementById("orders-chart").getContext("2d");
+        const chartData = JSON.parse(document.getElementById("chartdata").value);
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ['Pending', 'Processing', 'Completed', 'Returned'],
+                datasets: [{
+                    label: "Orders",
+                    data: chartData,
+                    backgroundColor: ['#8392ab', '#faae42', '#2dce89', '#f5365c'],
+                    borderWidth: 2,
+                    cutout: 60,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                interaction: {
+                    intersect: true,
+                    mode: 'index'
+                },
+            },
+        });
+    </script>
+@endpush

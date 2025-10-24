@@ -1,3 +1,5 @@
+@props(['title', 'value', 'icon', 'style' => 'background-color: #f8f9fa; border-radius: 10px;'])
+
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card-dashboard shadow h-100 py-3" style="{{ $style }}">
         <div class="card-body d-flex justify-content-between align-items-center">

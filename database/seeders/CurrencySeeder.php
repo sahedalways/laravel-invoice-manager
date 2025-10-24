@@ -14,8 +14,8 @@ class CurrencySeeder extends Seeder
     {
         // Insert default currency if not exists
         Currency::updateOrCreate(
-            ['currency_code' => 'USD'],
-            ['currency_symbol' => '$']
+            ['code' => 'USD'],
+            ['symbol' => '$']
         );
     }
 }
